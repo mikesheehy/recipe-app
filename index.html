@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angular Recipe Book</title>
+    
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Polyfills for older browsers -->
+    <script src="https://unpkg.com/core-js@2.5.4/client/shim.min.js"></script>
+    <script src="https://unpkg.com/zone.js@0.8.29/dist/zone.min.js"></script>
+    
+    <!-- RxJS -->
+    <script src="https://unpkg.com/rxjs@6.5.3/bundles/rxjs.umd.min.js"></script>
+    
+    <!-- Angular Libraries -->
+    <script src="https://unpkg.com/@angular/core@8.2.14/bundles/core.umd.min.js"></script>
+    <script src="https://unpkg.com/@angular/common@8.2.14/bundles/common.umd.min.js"></script>
+    <script src="https://unpkg.com/@angular/compiler@8.2.14/bundles/compiler.umd.min.js"></script>
+    <script src="https://unpkg.com/@angular/platform-browser@8.2.14/bundles/platform-browser.umd.min.js"></script>
+    <script src="https://unpkg.com/@angular/platform-browser-dynamic@8.2.14/bundles/platform-browser-dynamic.umd.min.js"></script>
+    <script src="https://unpkg.com/@angular/router@8.2.14/bundles/router.umd.min.js"></script>
+    <script src="https://unpkg.com/@angular/forms@8.2.14/bundles/forms.umd.min.js"></script>
+
+</head>
+<body class="bg-gray-100">
+    <!-- This is the root component where our Angular app will be rendered -->
+    <app-root></app-root>
+
+    <script>
+        // Deconstructing Angular libraries for easier access
+        const { Component, NgModule, Injectable, OnInit } = ng.core;
+        const { BrowserModule } = ng.platformBrowser;
+        const { platformBrowserDynamic } = ng.platformBrowserDynamic;
+        const { CommonModule } = ng.common;
+        const { RouterModule, ActivatedRoute, Router } = ng.router;
+        const { ReactiveFormsModule, FormBuilder, Validators } = ng.forms;
+        const { of } = rxjs;
+        const { map } = rxjs.operators;
+
+        // --- DATA SERVICE ---
+        // This service manages the recipe data. In a real app, this would
+        // fetch data from a server or API. Here, it uses a local JSON array.
+        class RecipeService {
+            constructor() {
+                // Initial recipe data, simulating a recipes.json file
+                this.recipes = [
+                    { id: 1, name: 'Spaghetti Carbonara', ingredients: 'Pasta, Eggs, Pancetta, Parmesan Cheese, Pepper', instructions: '1. Cook pasta. 2. Fry pancetta. 3. Mix eggs and cheese. 4. Combine everything.' },
+                    { id: 2, name: 'Classic Chili', ingredients: 'Ground Beef, Kidney Beans, Tomato Sauce, Chili Powder', instructions: '1. Brown the beef. 2. Add all ingredients to a pot. 3. Simmer for 1 hour.' },
+                    { id: 3, name: 'Guacamole', ingredients: 'Avocados, Lime, Onion, Cilantro, Salt', instructions: '1. Mash avocados. 2. Mix in other ingredients. 3. Serve immediately.' }
+                ];
+                this.nextId = 4;
+            }
+
+            getRecipes() {
+                return of(this.recipes);
+            }
+
+            getRecipe(id) {
+                const recipe = this.recipes.find(r => r.id === id);
+                return of(recipe);
+            }
+
+            addRecipe(recipe) {
+                recipe.id = this.nextId++;
+                this.recipes.push(recipe);
+            }
+
+            updateRecipe(updatedRecipe) {
+                const index = this.recipes.findIndex(r => r.id === updatedRecipe.id);
+                if (index !== -1) {
+                    this.recipes[index] = updatedRecipe;
+                }
+            }
+        }
+        // Decorate service for dependency injection
+        RecipeService.annotations = [new Injectable()];
+
+        // --- RECIPE LIST COMPONENT ---
+        // Displays a list of all recipes and includes a search filter
+        class RecipeListComponent {
+            constructor(recipeService, router) {
+                this.recipeService = recipeService;
+                this.router = router;
+                this.recipes = [];
+                this.filteredRecipes = [];
+                this.searchTerm = '';
+            }
+
+            ngOnInit() {
+                this.recipeService.getRecipes().subscribe(data => {
+                    this.recipes = data;
+                    this.filteredRecipes = data; // Initially, show all recipes
+                });
+            }
+            
+            filterRecipes() {
+                if (!this.searchTerm) {
+                    this.filteredRecipes = this.recipes;
+                    return;
+                }
+                const lowerCaseSearchTerm = this.searchTerm.toLowerCase();
+                this.filteredRecipes = this.recipes.filter(recipe => 
+                    recipe.name.toLowerCase().includes(lowerCaseSearchTerm) ||
+                    recipe.ingredients.toLowerCase().includes(lowerCaseSearchTerm)
+                );
+            }
+
+            navigateToAdd() {
+                this.router.navigate(['/add']);
+            }
+        }
+        RecipeListComponent.annotations = [
+            new Component({
+                selector: 'app-recipe-list',
+                template: `
+                    <div class="p-4 md:p-8">
+                        <div class="flex flex-col md:flex-row justify-between md:items-center mb-6 gap-4">
+                            <h1 class="text-3xl font-bold text-gray-800">Recipe Book</h1>
+                            <button (click)="navigateToAdd()" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300 self-start md:self-center">
+                                Add Recipe
+                            </button>
+                        </div>
+                        <!-- Search Bar -->
+                        <div class="mb-6">
+                            <input 
+                                type="text" 
+                                placeholder="Search by name or ingredients..." 
+                                [(ngModel)]="searchTerm" 
+                                (ngModelChange)="filterRecipes()"
+                                class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            >
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <!-- Display message if no recipes found -->
+                            <div *ngIf="filteredRecipes.length === 0" class="col-span-full text-center text-gray-500 mt-8">
+                                <p>No recipes found. Try a different search!</p>
+                            </div>
+                            <!-- Loop over filtered recipes -->
+                            <div *ngFor="let recipe of filteredRecipes" class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition duration-300">
+                                <div class="p-6">
+                                    <h2 class="text-2xl font-semibold text-gray-700 mb-2">{{ recipe.name }}</h2>
+                                    <p class="text-gray-600 truncate">{{ recipe.ingredients }}</p>
+                                    <div class="mt-4 flex justify-end">
+                                        <a [routerLink]="['/recipes', recipe.id]" class="text-blue-500 hover:text-blue-700 font-semibold mr-4">View</a>
+                                        <a [routerLink]="['/edit', recipe.id]" class="text-green-500 hover:text-green-700 font-semibold">Edit</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            })
+        ];
+        RecipeListComponent.parameters = [RecipeService, Router];
+
+        // --- RECIPE DETAIL COMPONENT ---
+        // Displays the details of a single selected recipe
+        class RecipeDetailComponent {
+            constructor(route, recipeService, router) {
+                this.route = route;
+                this.recipeService = recipeService;
+                this.router = router;
+                this.recipe = null;
+            }
+
+            ngOnInit() {
+                this.route.params.pipe(
+                    map(params => +params['id'])
+                ).subscribe(id => {
+                    this.recipeService.getRecipe(id).subscribe(recipe => {
+                        this.recipe = recipe;
+                    });
+                });
+            }
+            
+            goBack() {
+                this.router.navigate(['/recipes']);
+            }
+        }
+        RecipeDetailComponent.annotations = [
+            new Component({
+                selector: 'app-recipe-detail',
+                template: `
+                    <div class="p-4 md:p-8">
+                        <button (click)="goBack()" class="mb-6 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-lg shadow-md transition duration-300">
+                            &larr; Back to List
+                        </button>
+                        <div *ngIf="recipe" class="bg-white rounded-lg shadow-lg p-6 md:p-8">
+                            <h1 class="text-4xl font-bold text-gray-800 mb-4">{{ recipe.name }}</h1>
+                            <div class="mb-6">
+                                <h2 class="text-2xl font-semibold text-gray-700 mb-2 border-b pb-2">Ingredients</h2>
+                                <p class="text-gray-600 whitespace-pre-wrap">{{ recipe.ingredients }}</p>
+                            </div>
+                            <div>
+                                <h2 class="text-2xl font-semibold text-gray-700 mb-2 border-b pb-2">Instructions</h2>
+                                <p class="text-gray-600 whitespace-pre-wrap">{{ recipe.instructions }}</p>
+                            </div>
+                        </div>
+                    </div>
+                `
+            })
+        ];
+        RecipeDetailComponent.parameters = [ActivatedRoute, RecipeService, Router];
+
+        // --- RECIPE FORM COMPONENT ---
+        // A form for both adding and editing recipes
+        class RecipeFormComponent {
+            constructor(fb, route, router, recipeService) {
+                this.fb = fb;
+                this.route = route;
+                this.router = router;
+                this.recipeService = recipeService;
+                this.isEditMode = false;
+                this.recipeId = null;
+            }
+
+            ngOnInit() {
+                this.recipeForm = this.fb.group({
+                    name: ['', Validators.required],
+                    ingredients: ['', Validators.required],
+                    instructions: ['', Validators.required]
+                });
+
+                this.route.params.subscribe(params => {
+                    if (params['id']) {
+                        this.isEditMode = true;
+                        this.recipeId = +params['id'];
+                        this.recipeService.getRecipe(this.recipeId).subscribe(recipe => {
+                            if (recipe) {
+                                this.recipeForm.patchValue(recipe);
+                            }
+                        });
+                    }
+                });
+            }
+            
+            onSubmit() {
+                if (this.recipeForm.invalid) {
+                    return;
+                }
+                const formValue = this.recipeForm.value;
+                if (this.isEditMode) {
+                    const updatedRecipe = { id: this.recipeId, ...formValue };
+                    this.recipeService.updateRecipe(updatedRecipe);
+                    this.router.navigate(['/recipes', this.recipeId]);
+                } else {
+                    this.recipeService.addRecipe(formValue);
+                    this.router.navigate(['/recipes']);
+                }
+            }
+
+            goBack() {
+                this.router.navigate(['/recipes']);
+            }
+        }
+        RecipeFormComponent.annotations = [
+            new Component({
+                selector: 'app-recipe-form',
+                template: `
+                    <div class="p-4 md:p-8 max-w-4xl mx-auto">
+                         <button (click)="goBack()" class="mb-6 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-lg shadow-md transition duration-300">
+                            &larr; Cancel
+                        </button>
+                        <div class="bg-white rounded-lg shadow-lg p-6 md:p-8">
+                            <h1 class="text-3xl font-bold text-gray-800 mb-6">{{ isEditMode ? 'Edit' : 'Add' }} Recipe</h1>
+                            <form [formGroup]="recipeForm" (ngSubmit)="onSubmit()">
+                                <div class="mb-4">
+                                    <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Recipe Name</label>
+                                    <input id="name" type="text" formControlName="name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                                </div>
+                                <div class="mb-4">
+                                    <label for="ingredients" class="block text-gray-700 text-sm font-bold mb-2">Ingredients</label>
+                                    <textarea id="ingredients" formControlName="ingredients" rows="5" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+                                </div>
+                                <div class="mb-6">
+                                    <label for="instructions" class="block text-gray-700 text-sm font-bold mb-2">Instructions</label>
+                                    <textarea id="instructions" formControlName="instructions" rows="8" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+                                </div>
+                                <div class="flex items-center justify-end">
+                                    <button type="submit" [disabled]="recipeForm.invalid" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300 disabled:bg-gray-400">
+                                        Save Recipe
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                `
+            })
+        ];
+        RecipeFormComponent.parameters = [FormBuilder, ActivatedRoute, Router, RecipeService];
+
+        // --- APP COMPONENT (Root) ---
+        // The main component that holds the router outlet
+        class AppComponent {}
+        AppComponent.annotations = [
+            new Component({
+                selector: 'app-root',
+                template: `<router-outlet></router-outlet>`
+            })
+        ];
+
+        // --- APP ROUTING ---
+        // Defines the navigation paths for the application
+        const appRoutes = [
+            { path: 'recipes', component: RecipeListComponent },
+            { path: 'recipes/:id', component: RecipeDetailComponent },
+            { path: 'add', component: RecipeFormComponent },
+            { path: 'edit/:id', component: RecipeFormComponent },
+            { path: '', redirectTo: '/recipes', pathMatch: 'full' }
+        ];
+
+        // --- APP MODULE ---
+        // This module ties everything together: components, services, and routing.
+        class AppModule {}
+        AppModule.annotations = [
+            new NgModule({
+                imports: [
+                    BrowserModule,
+                    CommonModule,
+                    ReactiveFormsModule,
+                    ng.forms.FormsModule, // Added for ngModel
+                    RouterModule.forRoot(appRoutes, { useHash: true }) // useHash for single-file compatibility
+                ],
+                declarations: [
+                    AppComponent,
+                    RecipeListComponent,
+                    RecipeDetailComponent,
+                    RecipeFormComponent
+                ],
+                providers: [RecipeService],
+                bootstrap: [AppComponent]
+            })
+        ];
+
+        // --- BOOTSTRAP ---
+        // This line starts the Angular application.
+        document.addEventListener('DOMContentLoaded', () => {
+            platformBrowserDynamic().bootstrapModule(AppModule);
+        });
+    </script>
+</body>
+</html>
