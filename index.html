@@ -49,7 +49,8 @@
                 this.recipes = [
                     { id: 1, name: 'Spaghetti Carbonara', ingredients: 'Pasta, Eggs, Pancetta, Parmesan Cheese, Pepper', instructions: '1. Cook pasta. 2. Fry pancetta. 3. Mix eggs and cheese. 4. Combine everything.' },
                     { id: 2, name: 'Classic Chili', ingredients: 'Ground Beef, Kidney Beans, Tomato Sauce, Chili Powder', instructions: '1. Brown the beef. 2. Add all ingredients to a pot. 3. Simmer for 1 hour.' },
-                    { id: 3, name: 'Guacamole', ingredients: 'Avocados, Lime, Onion, Cilantro, Salt', instructions: '1. Mash avocados. 2. Mix in other ingredients. 3. Serve immediately.' }
+                    { id: 3, name: 'Guacamole', ingredients: 'Avocados, Lime, Onion, Cilantro, Salt', instructions: '1. Mash avocados. 2. Mix in other ingredients. 3. Serve immediately.' },
+                    { id: 4, name: 'Chipotle Chicken', time: '20 minutes', tags: 'Mexican, Stove', ingredients: 'Can of Chipotle Chicken in Adobo, Chicken Breast', instructions: '1.Set the pan to medium heat. Add chipotle peppers to the pan. 2.Add chicken breasts to pan. Run chipotle peppers and sauce on the chicken. Flip. 3.Remove and discard peppers. Move chicken to cutting board. Cut into cubes. 4. Move chicken back into pan until cooked all the way through. 5.Serve with rice, red onions, and cheese' }
                 ];
                 this.nextId = 4;
             }
@@ -141,7 +142,7 @@
                             <!-- Loop over filtered recipes -->
                             <div *ngFor="let recipe of filteredRecipes" class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition duration-300">
                                 <div class="p-6">
-                                    <img className="rounded-lg" src="https://images.unsplash.com/photo-1452784444945-3f422708fe5e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=512&q=80" alt="{{ recipe.name }}" />
+                                    <img className="rounded-lg" src="images/{{recipe.name}}.jpg" alt="{{ recipe.name }}" />
                                     <h2 class="text-2xl font-semibold text-gray-700 mb-2">{{ recipe.name }}</h2>
                                     <p class="text-gray-600 truncate">{{ recipe.ingredients }}</p>
                                     <div class="mt-4 flex justify-end">
