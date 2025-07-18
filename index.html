@@ -142,8 +142,8 @@
                             <!-- Loop over filtered recipes -->
                             <div *ngFor="let recipe of filteredRecipes" class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition duration-300">
                                 <div class="p-6">
-                                    <img class="rounded-lg" src="images/{{recipe.name}}.jpg" alt="{{ recipe.name }}" />
-                                    <h2 class="text-2xl font-semibold text-gray-700 mb-2">{{ recipe.name.replace(/ /g, '%20') }}</h2>
+                                    <img class="rounded-lg" src="images/{{ recipe.name.replace(' ', '%20') }}.jpg" alt="{{ recipe.name }}" />
+                                    <h2 class="text-2xl font-semibold text-gray-700 mb-2">{{recipe.name}}</h2>
                                     <p class="text-gray-600 truncate">{{ recipe.ingredients }}</p>
                                     <div class="mt-4 flex justify-end">
                                         <a [routerLink]="['/recipes', recipe.id]" class="text-blue-500 hover:text-blue-700 font-semibold mr-4">View</a>
