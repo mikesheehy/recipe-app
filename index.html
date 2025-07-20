@@ -50,9 +50,9 @@
                     { id: 1, name: 'Spaghetti Carbonara', ingredients: 'Pasta, Eggs, Pancetta, Parmesan Cheese, Pepper', instructions: '1. Cook pasta. 2. Fry pancetta. 3. Mix eggs and cheese. 4. Combine everything.' },
                     { id: 2, name: 'Classic Chili', ingredients: 'Ground Beef, Kidney Beans, Tomato Sauce, Chili Powder', instructions: '1. Brown the beef. 2. Add all ingredients to a pot. 3. Simmer for 1 hour.' },
                     { id: 3, name: 'Guacamole', ingredients: 'Avocados, Lime, Onion, Cilantro, Salt', instructions: '1. Mash avocados. 2. Mix in other ingredients. 3. Serve immediately.' },
-                    { id: 4, name: 'Chipotle Chicken', time: '20 minutes', tags: 'Mexican, Stove', ingredients: 'Can of Chipotle Chicken in Adobo, Chicken Breast', instructions: '1.Set the pan to medium heat. Add chipotle peppers to the pan. 2.Add chicken breasts to pan. Run chipotle peppers and sauce on the chicken. Flip. 3.Remove and discard peppers. Move chicken to cutting board. Cut into cubes. 4. Move chicken back into pan until cooked all the way through. 5.Serve with rice, red onions, and cheese' }
+                    { id: 4, name: 'Chipotle Chicken', time: '20 minutes', tags: 'Mexican, Stove', ingredients: 'Can of Chipotle Chicken in Adobo, Chicken Breast', instructions: 'Set the pan to medium heat and add chipotle peppers to the pan. Add chicken breasts to pan. Run chipotle peppers and sauce on the chicken. Flip. Remove and discard peppers. Move chicken to cutting board. Cut into cubes. Move chicken back into pan until cooked all the way through. Serve with rice, red onions, and cheese' }
                 ];
-                this.nextId = 4;
+                this.nextId = 100;
             }
 
             getRecipes() {
@@ -142,7 +142,7 @@
                             <!-- Loop over filtered recipes -->
                             <div *ngFor="let recipe of filteredRecipes" class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition duration-300">
                                 <div class="p-6">
-                                    <img class="rounded-lg" src="images/{{ recipe.name.replace(' ', '%20') }}.jpg" alt="{{ recipe.name }}" />
+                                    <img class="rounded-lg" src="images/{{ recipe.name.replace(' ', '') }}.jpg" alt="{{ recipe.name }}" />
                                     <h2 class="text-2xl font-semibold text-gray-700 mb-2">{{recipe.name}}</h2>
                                     <p class="text-gray-600 truncate">{{ recipe.ingredients }}</p>
                                     <div class="mt-4 flex justify-end">
@@ -194,11 +194,19 @@
                             <h1 class="text-4xl font-bold text-gray-800 mb-4">{{ recipe.name }}</h1>
                             <div class="mb-6">
                                 <h2 class="text-2xl font-semibold text-gray-700 mb-2 border-b pb-2">Ingredients</h2>
-                                <p class="text-gray-600 whitespace-pre-wrap">{{ recipe.ingredients }}</p>
+                                <ul type="disc" class="list-disc pl-6 mt-4 text-gray-600 whitespace-pre-wrap">
+                                    <li *ngFor="let item of recipe.ingredients.split(', ')" class="text-gray-600 mt-2">
+                                        {{ item.trim() }}
+                                    </li>
+                                </ul>
                             </div>
                             <div>
                                 <h2 class="text-2xl font-semibold text-gray-700 mb-2 border-b pb-2">Instructions</h2>
-                                <p class="text-gray-600 whitespace-pre-wrap">{{ recipe.instructions }}</p>
+                                <ol type="1" class="list-decimal pl-6 mt-4 text-gray-600 whitespace-pre-wrap">
+                                    <li *ngFor="let item of recipe.instructions.split('. ')" class="text-gray-600 mt-2">
+                                        {{ item.trim() }}
+                                    </li>
+                                </ol>
                             </div>
                         </div>
                     </div>
