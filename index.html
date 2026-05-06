@@ -7,48 +7,15 @@
     
     <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Polyfills for older browsers -->
-    <script src="https://unpkg.com/core-js@2.5.4/client/shim.min.js"></script>
-    <script src="https://unpkg.com/zone.js@0.8.29/dist/zone.min.js"></script>
-    
-    <!-- RxJS -->
-    <script src="https://unpkg.com/rxjs@6.5.3/bundles/rxjs.umd.min.js"></script>
-    
-    <!-- Angular Libraries -->
-    <script src="https://unpkg.com/@angular/core@8.2.14/bundles/core.umd.min.js"></script>
-    <script src="https://unpkg.com/@angular/common@8.2.14/bundles/common.umd.min.js"></script>
-    <script src="https://unpkg.com/@angular/compiler@8.2.14/bundles/compiler.umd.min.js"></script>
-    <script src="https://unpkg.com/@angular/platform-browser@8.2.14/bundles/platform-browser.umd.min.js"></script>
-    <script src="https://unpkg.com/@angular/platform-browser-dynamic@8.2.14/bundles/platform-browser-dynamic.umd.min.js"></script>
-    <script src="https://unpkg.com/@angular/router@8.2.14/bundles/router.umd.min.js"></script>
-    <script src="https://unpkg.com/@angular/forms@8.2.14/bundles/forms.umd.min.js"></script>
 
 </head>
 <body class="bg-gray-100">
-    <!-- This is the root component where our Angular app will be rendered -->
-    <app-root></app-root>
+    <div id="app"></div>
 
     <script>
-        // Deconstructing Angular libraries for easier access
-        const { Component, NgModule, Injectable, OnInit } = ng.core;
-        const { BrowserModule } = ng.platformBrowser;
-        const { platformBrowserDynamic } = ng.platformBrowserDynamic;
-        const { CommonModule } = ng.common;
-        const { RouterModule, ActivatedRoute, Router } = ng.router;
-        const { ReactiveFormsModule, FormBuilder, Validators } = ng.forms;
-        const { of } = rxjs;
-        const { map } = rxjs.operators;
-
-        // --- DATA SERVICE ---
-        // This service manages the recipe data. In a real app, this would
-        // fetch data from a server or API. Here, it uses a local JSON array.
-        class RecipeService {
-            constructor() {
-                // Initial recipe data, simulating a recipes.json file
-                this.recipes = [
-                    { id: 1, name: 'Spaghetti Bake', time: '20 minutes', tags: 'Italian, Pasta', ingredients: '1/2 lb Spaghetti Noodles, Ground Turkey, 1/2 Jar of marinara sauce, Garlic, Onion, Shredded Mozzarella, Green onions sliced', tags: 'Italian, Stove, Oven, Pasta, Noodles', notes: 'If you dont have onion or garlic, substitute onion powder and garlic powder', instructions: 'Cook Ground turkey and set aside. Cook spaghetti noodles, remove from pot. Add olive oil, onions, and garlic. Add spaghetti sauce, noodles, and turkey. Reduce heat simmer for 5 minutes. Add to 9x9 casserole dish and top with mozzarella cheese until covered. Broil for 5 minutes. Sprinkle with green onions.' },
-                    { id: 2, name: 'Turkey Chili', time: '1 hour', tags:'Stove', ingredients: '1 tablespoon olive oil, 2 pounds ground turkey, 1 chopped yellow onion, 2 tablespoons chopped garlic, 1 large red pepper chopped, 1 cup chopped celery, 1 jalapeño chopped, 1 tablespoon dried oregano, 2 bay leaves, 3 tablespoons chili powder, 2 teaspoons ground cumin, 3 cups canned diced tomatoes, 2 cups chicken broth (fresh or canned), Salt and black pepper, 2(15-ounce) cans red kidney beans drained, 2 cups shredded Cheddar, 1cup sour cream (optional)', tags: 'Stove', instructions: 'Heat the oil over high in a large heavy pot and add the turkey meat. Cook until lightly browned, about 5 minutes, chopping down and stirring with the side of a heavy kitchen spoon to break up any lumps. Add the onions, garlic, sweet pepper, celery, jalapeño, oregano, bay leaves, chili powder and cumin. Stir to blend well; Cook for 5 minutes. Add the tomatoes, chicken broth, salt and pepper to taste. Bring to a boil, reduce heat and simmer, stirring occasionally, for 15 minutes. Add the drained beans and cook, stirring occasionally, for 10 minutes longer. Serve in bowls with Cheddar, and sour cream and lime wedges, if desired.', original: 'https://cooking.nytimes.com/recipes/7985-turkey-chili?q=chili' },
+        const recipes = [
+                    { id: 1, name: 'Spaghetti Bake', time: '20 minutes', ingredients: '1/2 lb Spaghetti Noodles, Ground Turkey, 1/2 Jar of marinara sauce, Garlic, Onion, Shredded Mozzarella, Green onions sliced', tags: 'Italian, Stove, Oven, Pasta, Noodles', notes: 'If you dont have onion or garlic, substitute onion powder and garlic powder', instructions: 'Cook Ground turkey and set aside. Cook spaghetti noodles, remove from pot. Add olive oil, onions, and garlic. Add spaghetti sauce, noodles, and turkey. Reduce heat simmer for 5 minutes. Add to 9x9 casserole dish and top with mozzarella cheese until covered. Broil for 5 minutes. Sprinkle with green onions.' },
+                    { id: 2, name: 'Turkey Chili', time: '1 hour', tags:'Stove', ingredients: '1 tablespoon olive oil, 2 pounds ground turkey, 1 chopped yellow onion, 2 tablespoons chopped garlic, 1 large red pepper chopped, 1 cup chopped celery, 1 jalapeño chopped, 1 tablespoon dried oregano, 2 bay leaves, 3 tablespoons chili powder, 2 teaspoons ground cumin, 3 cups canned diced tomatoes, 2 cups chicken broth (fresh or canned), Salt and black pepper, 2(15-ounce) cans red kidney beans drained, 2 cups shredded Cheddar, 1cup sour cream (optional)', instructions: 'Heat the oil over high in a large heavy pot and add the turkey meat. Cook until lightly browned, about 5 minutes, chopping down and stirring with the side of a heavy kitchen spoon to break up any lumps. Add the onions, garlic, sweet pepper, celery, jalapeño, oregano, bay leaves, chili powder and cumin. Stir to blend well; Cook for 5 minutes. Add the tomatoes, chicken broth, salt and pepper to taste. Bring to a boil, reduce heat and simmer, stirring occasionally, for 15 minutes. Add the drained beans and cook, stirring occasionally, for 10 minutes longer. Serve in bowls with Cheddar, and sour cream and lime wedges, if desired.', original: 'https://cooking.nytimes.com/recipes/7985-turkey-chili?q=chili' },
                     { id: 3, name: 'Guacamole', time: '5 minutes', ingredients: '4-6 Avocadoes, Red Onion, Lime', tags: 'Mexican', instructions: 'Smash avocadoes in bowl. Combine ingredients', notes: 'Use lime juice to preserve the guacamole overnight' },
                     { id: 4, name: 'Chipotle Chicken', time: '20 minutes', tags: 'Mexican, Stove', ingredients: 'Can of Chipotle Chicken in Adobo, Chicken Breast', instructions: 'Set the pan to medium heat and add chipotle peppers to the pan. Add chicken breasts to pan. Run chipotle peppers and sauce on the chicken. Flip. Remove and discard peppers. Move chicken to cutting board. Cut into cubes. Move chicken back into pan until cooked all the way through. Serve with rice, red onions, and cheese' },
                     { id: 5, name: 'Enchilladas', time: '30 minutes', tags: 'Mexican, Oven', ingredients: 'Olive oil, Yellow Onion diced, Red pepper, enchillada sauce, can diced tomatoes, 4 cups Mexican cheese, 2 cloves garlic, cumin, cilantro, either 2 chicken breasts or 1lb ground beef, 5-6 flour tortillas', instructions: 'Preheat oven to 350 degrees. Cook chicken or ground beef, add to bowl. Set a pan to medium heat. Add olive oil. Add red peppers and onion to pan, heat until softened. Add Garlic, Cumin, Enchilada sauce, and diced tomatoes to pan until mixture is heated through. Pour 1 cup of mixture into bowl, save 1 cup to pour over enchilladas, add rest to bottom of tray. In bowl, add cooked meat, half cilantro, and 2 cups Mexican cheese. Stir until well mixed. Add mixture into 5-6 tortillas. Place tortillas on tray and top with remaining cheese and enchillada mixture. Bake for 10 mins' },
@@ -111,335 +78,223 @@
                     { id: 62, name: 'Mushroom Chicken Pasta', time: '45 minutes', tags: 'Pasta, Stove', ingredients: "2 Chicken Breasts, 1 tsp Salt, 1 tsp Pepper, 1 tsp Paprika, 1 tsp Garlic Powder, 1 tsp Onion Powder, 1 Tbsp Olive Oil, 1 Tbsp Butter, 3 Cloves Garlic Minced, 1 Shallot Minced, 2 Cups Mushrooms, 32 Oz Chicken Stock, 1 1/2-2 Cups Heavy Cream, 1 Box Spaghetti Pasta, 1/2 Cup Parmesan Cheese, Fresh Parsley", instructions: "In a skillet on medium to high heat saute your seasoned chicken with olive oil until cooked about 7-8 minutes a side. Remove chicken from pan and set in oven keeping warm. Add your butter, garlic, and shallot to the pan and sauté until fragrant about 1 minute. Next, Add your mushrooms and begin to cook down. Pour in your chicken stock and heavy cream and stir. Add your box of raw pasta and let the pasta absorb the delicious sauce. The pasta releases starch that will naturally thicken the sauce. Once the pasta seems cooked, add your parmesan cheese and remove the pan from the heat. Give one last stir. Add your chicken back in and garnish with parsley and parmesan cheese.", original: "https://saucedupfoods.com/easy-one-pan-creamy-mushroom-chicken-pasta/" },
                     { id: 63, name: 'Spinach Tortellini', time: '20 minutes', tags: 'Vegetarian, Stove', ingredients: "4 cloves garlic, 1 Tbsp olive oil, 28oz. can petite diced tomatoes, 1/2 tsp dried basil, 1/2 tsp dried oregano, 1/4 tsp Freshly cracked pepper, 4 oz. cream cheese, 19 oz. frozen cheese tortellini, 2 cups fresh spinach, 1/4 cup grated Parmesan", instructions: "Mince the garlic and add it to a large skillet with the olive oil. Sauté the garlic over medium heat for about one minute, or just until it becomes fragrant. Add the diced tomatoes (with juices), basil, oregano, and pepper to the skillet. Stir to combine and continue to cook and stir until the tomatoes are hot. Cut the cream cheese into chunks, then add it to the hot tomato sauce in the skillet. Continue to cook and stir until the cream cheese has melted into the tomatoes and created a smooth and creamy sauce (use a whisk, if needed). Meanwhile, bring a large pot of water to a boil for the tortellini. Once boiling, add the tortellini and continue to boil for about three minutes, or until they are all floating (make sure to check the package instructions for the recommended cook time). Drain the tortellini in a colander. While the tortellini is draining, roughly chop the spinach into bite-sized pieces. Add the chopped spinach to the sauce in the skillet and stir to combine, allowing the heat to wilt the spinach. Add the drained tortellini to the skillet and stir to combine with the sauce. Sprinkle the Parmesan over top and stir to combine.", original: "https://www.budgetbytes.com/spinach-tortellini-skillet/" },
                     { id: 64, name: 'Zucchini Fries', time: '25 minutes', tags: 'Vegetarian, Air Fryer', ingredients: "3 small zucchini or 2 large, 1 cup panko crumbs, 1/2 cup grated parmesan cheese, 2 Tbsp Italian Seasoning, 1 teaspoon garlic powder, 1/2 teaspoon salt, 1/2 cup flour, 2 eggs, 1 tablespoon water", instructions: "Slice the zucchini into sticks. Add the flour to a bag with the zucchini and shake it to coat them. In a medium bowl stir together the Panko, parmesan, Italian seasoning, garlic powder, and salt. Add the eggs and water to a small bowl and whisk them together. Remove the zucchini from the bag and dip them in the egg mixture then into the Panko. Spray the air fryer basket with olive oil then place in zucchini in. Spray the zucchini with olive oil and bake at 350 degrees F for 7-12 minutes or until golden and crispy. Serve warm with marinara or ranch.", original: "https://therecipecritic.com/air-fryer-zucchini-fries/" }              
-                ];
-                this.nextId = 100;
-            }
+        ];
 
-            getRecipes() {
-                return of(this.recipes);
-            }
+        let nextId = 100;
+        let searchTerm = '';
+        let showingHidden = false;
 
-            getRecipe(id) {
-                const recipe = this.recipes.find(r => r.id === id);
-                return of(recipe);
-            }
-
-            addRecipe(recipe) {
-                recipe.id = this.nextId++;
-                this.recipes.push(recipe);
-            }
-
-            updateRecipe(updatedRecipe) {
-                const index = this.recipes.findIndex(r => r.id === updatedRecipe.id);
-                if (index !== -1) {
-                    this.recipes[index] = updatedRecipe;
-                }
-            }
+        function imgSrc(name) {
+            return 'images/' + name.toLowerCase().replaceAll(' ', '') + '.jpg';
         }
-        // Decorate service for dependency injection
-        RecipeService.annotations = [new Injectable()];
 
-        // --- RECIPE LIST COMPONENT ---
-        // Displays a list of all recipes and includes a search filter
-        class RecipeListComponent {
-            constructor(recipeService, router) {
-                this.recipeService = recipeService;
-                this.router = router;
-                this.recipes = [];
-                this.filteredRecipes = [];
-                this.searchTerm = '';
-            }
-
-            ngOnInit() {
-                this.recipeService.getRecipes().subscribe(data => {
-                    this.allRecipes = data;
-                    this.recipes = data.filter(r => !r.hide);
-                    this.filteredRecipes = this.recipes; // Initially, show all recipes
-                });
-            }
-
-            filterRecipes() {
-                if (!this.searchTerm) {
-                    this.filteredRecipes = this.recipes;
-                    return;
-                }
-                const terms = this.searchTerm.toLowerCase().split('|').map(t => t.trim());
-                this.filteredRecipes = this.recipes.filter(recipe =>
-                    terms.some(term =>
-                        recipe.name.toLowerCase().includes(term) ||
-                        recipe.ingredients.toLowerCase().includes(term) ||
-                        recipe.tags.toLowerCase().includes(term)
-                    )
-                );
-            }
-
-            showHidden() {
-                this.searchTerm = '';
-                this.filteredRecipes = this.allRecipes.filter(r => r.hide);
-            }
-
-            navigateToAdd() {
-                this.router.navigate(['/add']);
-            }
+        function getFiltered() {
+            if (showingHidden) return recipes.filter(r => r.hide);
+            const visible = recipes.filter(r => !r.hide);
+            if (!searchTerm) return visible;
+            const terms = searchTerm.toLowerCase().split('|').map(t => t.trim());
+            return visible.filter(r =>
+                terms.some(term =>
+                    r.name.toLowerCase().includes(term) ||
+                    r.ingredients.toLowerCase().includes(term) ||
+                    r.tags.toLowerCase().includes(term)
+                )
+            );
         }
-        RecipeListComponent.annotations = [
-            new Component({
-                selector: 'app-recipe-list',
-                template: `
-                    <div class="p-4 md:p-8">
-                        <div class="flex flex-col md:flex-row justify-between md:items-center mb-6 gap-4">
-                            <h1 class="text-3xl font-bold text-gray-800">Recipe Book</h1>
+
+        function renderCards() {
+            const filtered = getFiltered();
+            if (filtered.length === 0) {
+                return '<div class="col-span-full text-center text-gray-500 mt-8"><p>No recipes found. Try a different search!</p></div>';
+            }
+            return filtered.map(r => `
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition duration-300">
+                    <div class="p-6">
+                        <a href="#/recipes/${r.id}">
+                            <img class="rounded-lg h-64 w-full object-fill" src="${imgSrc(r.name)}" onerror="this.onerror=null; this.src='images/placeholder.jpg'" alt="${r.name}" />
+                            <h2 class="text-2xl font-semibold text-gray-700 mb-2">${r.name}</h2>
+                            <p class="text-gray-600 truncate">${r.ingredients}</p>
+                        </a>
+                        <div class="mt-4 flex justify-end">
+                            <a href="#/recipes/${r.id}" class="text-blue-500 hover:text-blue-700 font-semibold mr-4">View</a>
                         </div>
-                        <!-- Search Bar -->
+                    </div>
+                </div>`).join('');
+        }
+
+        function renderList() {
+            return `
+                <div class="p-4 md:p-8">
+                    <div class="flex flex-col md:flex-row justify-between md:items-center mb-6 gap-4">
+                        <h1 class="text-3xl font-bold text-gray-800">Recipe Book</h1>
+                    </div>
+                    <div class="mb-6">
+                        <input type="text" id="search-input" placeholder="Search by name or ingredients..."
+                            class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div class="mb-4">
+                        <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded mr-2 filter-btn" data-term="">All</button>
+                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2 filter-btn" data-term="mexican">Mexican</button>
+                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2 filter-btn" data-term="italian|pasta">Italian</button>
+                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2 filter-btn" data-term="vegetarian">Vegetables</button>
+                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2 filter-btn" data-term="breakfast">Breakfast</button>
+                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2 filter-btn" data-term="dessert">Desserts</button>
+                        <button class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded mr-2 filter-btn" data-term="stove">Stove</button>
+                        <button class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded mr-2 filter-btn" data-term="oven">Oven</button>
+                        <button class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded mr-2 filter-btn" data-term="air fryer">Air Fryer</button>
+                        <button class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded mr-2 filter-btn" data-term="slow cooking">Slow Cooking</button>
+                        <button id="hidden-btn" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mr-2">Hidden</button>
+                    </div>
+                    <div id="recipe-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        ${renderCards()}
+                    </div>
+                </div>`;
+        }
+
+        function renderDetail(id) {
+            const recipe = recipes.find(r => r.id === id);
+            if (!recipe) return '<div class="p-8 text-center text-gray-500">Recipe not found.</div>';
+
+            const ingredientItems = recipe.ingredients.split(', ')
+                .map(item => `<li class="text-gray-600 mt-2">${item.trim()}</li>`).join('');
+            const instructionItems = recipe.instructions.split('. ')
+                .filter(s => s.trim())
+                .map(item => `<li class="text-gray-600 mt-2">${item.trim()}</li>`).join('');
+
+            return `
+                <div class="p-4 md:p-8">
+                    <a href="#/recipes" class="inline-block mb-6 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-lg shadow-md transition duration-300">&larr; Back to List</a>
+                    <div class="bg-white rounded-lg shadow-lg p-6 md:p-8">
+                        <img class="lg:float-right rounded-lg h-64 w-full lg:w-96 object-fill" src="${imgSrc(recipe.name)}" onerror="this.onerror=null; this.src='images/placeholder.jpg'" alt="${recipe.name}" />
+                        <h1 class="text-4xl font-bold text-gray-800 mb-4">${recipe.name}</h1>
+                        <h4 class="text-gray-600 mb-4">${recipe.time} | ${recipe.tags}</h4>
                         <div class="mb-6">
-                            <input 
-                                type="text" 
-                                placeholder="Search by name or ingredients..." 
-                                [(ngModel)]="searchTerm" 
-                                (ngModelChange)="filterRecipes()"
-                                class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            >
+                            <h2 class="text-2xl font-semibold text-gray-700 mb-2 border-b pb-2">Ingredients</h2>
+                            <ul type="disc" class="list-disc pl-6 mt-4 text-gray-600 whitespace-pre-wrap">${ingredientItems}</ul>
                         </div>
-                        <!-- Filter Buttons -->
-                        <div class="mb-4">
-                            <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded mr-2" (click)="searchTerm = ''; filterRecipes();">All</button>
-                            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2" (click)="searchTerm = 'mexican'; filterRecipes();">Mexican</button>
-                            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2" (click)="searchTerm = 'italian|pasta'; filterRecipes();">Italian</button>
-                            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2" (click)="searchTerm = 'vegetarian'; filterRecipes();">Vegetables</button>
-                            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2" (click)="searchTerm = 'breakfast'; filterRecipes();">Breakfast</button>
-                            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2" (click)="searchTerm = 'dessert'; filterRecipes();">Desserts</button>
-                            <button class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded mr-2" (click)="searchTerm = 'stove'; filterRecipes();">Stove</button>
-                            <button class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded mr-2" (click)="searchTerm = 'oven'; filterRecipes();">Oven</button>
-                            <button class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded mr-2" (click)="searchTerm = 'air fryer'; filterRecipes();">Air Fryer</button>
-                            <button class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded mr-2" (click)="searchTerm = 'slow cooking'; filterRecipes();">Slow Cooking</button>
-                            <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mr-2" (click)="showHidden();">Hidden</button>
+                        <div class="mb-6">
+                            <h2 class="text-2xl font-semibold text-gray-700 mb-2 border-b pb-2">Instructions</h2>
+                            <ol type="1" class="list-decimal pl-6 mt-4 text-gray-600 whitespace-pre-wrap">${instructionItems}</ol>
                         </div>
-                        <!-- Recipe Cards -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            <!-- Display message if no recipes found -->
-                            <div *ngIf="filteredRecipes.length === 0" class="col-span-full text-center text-gray-500 mt-8">
-                                <p>No recipes found. Try a different search!</p>
-                            </div>
-                            <!-- Loop over filtered recipes -->
-                            <div *ngFor="let recipe of filteredRecipes" class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition duration-300">
-                                <div class="p-6">
-                                    <a [routerLink]="['/recipes', recipe.id]">
-                                    <img class="rounded-lg h-64 w-full object-fill" src="images/{{ recipe.name.toLowerCase().replaceAll(' ', '') }}.jpg" onerror="this.onerror=null; this.src='images/placeholder.jpg'" alt="{{ recipe.name }}" />
-                                    <h2 class="text-2xl font-semibold text-gray-700 mb-2">{{recipe.name}}</h2>
-                                    <p class="text-gray-600 truncate">{{ recipe.ingredients }}</p>
-                                    </a>
-                                    <div class="mt-4 flex justify-end">
-                                        <a [routerLink]="['/recipes', recipe.id]" class="text-blue-500 hover:text-blue-700 font-semibold mr-4">View</a>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="mb-6">
+                            <h2 class="text-2xl font-semibold text-gray-700 mb-2 border-b pb-2">Notes</h2>
+                            <p class="text-gray-600 whitespace-pre-wrap">${recipe.notes || 'No additional notes.'}</p>
+                            ${recipe.original ? `<a class="text-gray-600 whitespace-pre-wrap" href="${recipe.original}" target="_blank">Original Recipe</a>` : ''}
                         </div>
                     </div>
-                `
-            })
-        ];
-        RecipeListComponent.parameters = [RecipeService, Router];
-
-        // --- RECIPE DETAIL COMPONENT ---
-        // Displays the details of a single selected recipe
-        class RecipeDetailComponent {
-            constructor(route, recipeService, router) {
-                this.route = route;
-                this.recipeService = recipeService;
-                this.router = router;
-                this.recipe = null;
-            }
-
-            ngOnInit() {
-                this.route.params.pipe(
-                    map(params => +params['id'])
-                ).subscribe(id => {
-                    this.recipeService.getRecipe(id).subscribe(recipe => {
-                        this.recipe = recipe;
-                    });
-                });
-            }
-            
-            goBack() {
-                this.router.navigate(['/recipes']);
-            }
+                </div>`;
         }
-        RecipeDetailComponent.annotations = [
-            new Component({
-                selector: 'app-recipe-detail',
-                template: `
-                    <div class="p-4 md:p-8">
-                        <button (click)="goBack()" class="mb-6 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-lg shadow-md transition duration-300">
-                            &larr; Back to List
-                        </button>
-                        <!-- Display recipe details -->
-                        <div *ngIf="recipe" class="bg-white rounded-lg shadow-lg p-6 md:p-8">
-                            <img class="lg:float-right rounded-lg h-64 w-full lg:w-96 object-fill" src="images/{{ recipe.name.toLowerCase().replaceAll(' ', '') }}.jpg" onerror="this.onerror=null; this.src='images/placeholder.jpg'" alt="{{ recipe.name }}" />
-                            <h1 class="text-4xl font-bold text-gray-800 mb-4">{{ recipe.name }}</h1>
-                            <h4 class="text-gray-600 mb-4">{{ recipe.time }} | {{ recipe.tags }}</h4>
-                            <div class="mb-6">
-                                <h2 class="text-2xl font-semibold text-gray-700 mb-2 border-b pb-2">Ingredients</h2>
-                                <ul type="disc" class="list-disc pl-6 mt-4 text-gray-600 whitespace-pre-wrap">
-                                    <li *ngFor="let item of recipe.ingredients.split(', ')" class="text-gray-600 mt-2">
-                                        {{ item.trim() }}
-                                    </li>
-                                </ul>
+
+        function renderForm(id) {
+            const isEdit = id != null;
+            return `
+                <div class="p-4 md:p-8 max-w-4xl mx-auto">
+                    <a href="#/recipes" class="inline-block mb-6 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-lg shadow-md transition duration-300">&larr; Cancel</a>
+                    <div class="bg-white rounded-lg shadow-lg p-6 md:p-8">
+                        <h1 class="text-3xl font-bold text-gray-800 mb-6">${isEdit ? 'Edit' : 'Add'} Recipe</h1>
+                        <form id="recipe-form">
+                            <div class="mb-4">
+                                <label for="f-name" class="block text-gray-700 text-sm font-bold mb-2">Recipe Name</label>
+                                <input id="f-name" type="text" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                            </div>
+                            <div class="mb-4">
+                                <label for="f-ingredients" class="block text-gray-700 text-sm font-bold mb-2">Ingredients</label>
+                                <textarea id="f-ingredients" required rows="5" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
                             </div>
                             <div class="mb-6">
-                                <h2 class="text-2xl font-semibold text-gray-700 mb-2 border-b pb-2">Instructions</h2>
-                                <ol type="1" class="list-decimal pl-6 mt-4 text-gray-600 whitespace-pre-wrap">
-                                    <li *ngFor="let item of recipe.instructions.split('. ')" class="text-gray-600 mt-2">
-                                        {{ item.trim() }}
-                                    </li>
-                                </ol>
+                                <label for="f-instructions" class="block text-gray-700 text-sm font-bold mb-2">Instructions</label>
+                                <textarea id="f-instructions" required rows="8" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
                             </div>
-                            <div class="mb-6">
-                                <h2 class="text-2xl font-semibold text-gray-700 mb-2 border-b pb-2">Notes</h2>
-                                <p class="text-gray-600 whitespace-pre-wrap">{{ recipe.notes || 'No additional notes.' }}</p>
-                                <a *ngIf="recipe.original" class="text-gray-600 whitespace-pre-wrap" href="{{recipe.original}}" target="_blank">Original Recipe</a>
+                            <div class="flex items-center justify-end">
+                                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300">Save Recipe</button>
                             </div>
-                        </div>
+                        </form>
                     </div>
-                `
-            })
-        ];
-        RecipeDetailComponent.parameters = [ActivatedRoute, RecipeService, Router];
+                </div>`;
+        }
 
-        // --- RECIPE FORM COMPONENT ---
-        // A form for both adding and editing recipes
-        class RecipeFormComponent {
-            constructor(fb, route, router, recipeService) {
-                this.fb = fb;
-                this.route = route;
-                this.router = router;
-                this.recipeService = recipeService;
-                this.isEditMode = false;
-                this.recipeId = null;
-            }
-
-            ngOnInit() {
-                this.recipeForm = this.fb.group({
-                    name: ['', Validators.required],
-                    ingredients: ['', Validators.required],
-                    instructions: ['', Validators.required]
+        function attachListEvents() {
+            const input = document.getElementById('search-input');
+            input.value = searchTerm;
+            input.addEventListener('input', e => {
+                searchTerm = e.target.value;
+                showingHidden = false;
+                document.getElementById('recipe-grid').innerHTML = renderCards();
+            });
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    searchTerm = btn.dataset.term;
+                    showingHidden = false;
+                    input.value = searchTerm;
+                    document.getElementById('recipe-grid').innerHTML = renderCards();
                 });
+            });
+            document.getElementById('hidden-btn').addEventListener('click', () => {
+                searchTerm = '';
+                showingHidden = true;
+                input.value = '';
+                document.getElementById('recipe-grid').innerHTML = renderCards();
+            });
+        }
 
-                this.route.params.subscribe(params => {
-                    if (params['id']) {
-                        this.isEditMode = true;
-                        this.recipeId = +params['id'];
-                        this.recipeService.getRecipe(this.recipeId).subscribe(recipe => {
-                            if (recipe) {
-                                this.recipeForm.patchValue(recipe);
-                            }
-                        });
-                    }
-                });
+        function attachFormEvents(id) {
+            const recipe = id != null ? recipes.find(r => r.id === id) : null;
+            if (recipe) {
+                document.getElementById('f-name').value = recipe.name;
+                document.getElementById('f-ingredients').value = recipe.ingredients;
+                document.getElementById('f-instructions').value = recipe.instructions;
             }
-            
-            onSubmit() {
-                if (this.recipeForm.invalid) {
-                    return;
-                }
-                const formValue = this.recipeForm.value;
-                if (this.isEditMode) {
-                    const updatedRecipe = { id: this.recipeId, ...formValue };
-                    this.recipeService.updateRecipe(updatedRecipe);
-                    this.router.navigate(['/recipes', this.recipeId]);
+            document.getElementById('recipe-form').addEventListener('submit', e => {
+                e.preventDefault();
+                const name = document.getElementById('f-name').value.trim();
+                const ingredients = document.getElementById('f-ingredients').value.trim();
+                const instructions = document.getElementById('f-instructions').value.trim();
+                if (recipe) {
+                    Object.assign(recipe, { name, ingredients, instructions });
+                    location.hash = '#/recipes/' + id;
                 } else {
-                    this.recipeService.addRecipe(formValue);
-                    this.router.navigate(['/recipes']);
+                    recipes.push({ id: nextId++, name, ingredients, instructions, tags: '', time: '' });
+                    location.hash = '#/recipes';
                 }
-            }
-
-            goBack() {
-                this.router.navigate(['/recipes']);
-            }
+            });
         }
-        RecipeFormComponent.annotations = [
-            new Component({
-                selector: 'app-recipe-form',
-                template: `
-                    <div class="p-4 md:p-8 max-w-4xl mx-auto">
-                         <button (click)="goBack()" class="mb-6 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-lg shadow-md transition duration-300">
-                            &larr; Cancel
-                        </button>
-                        <div class="bg-white rounded-lg shadow-lg p-6 md:p-8">
-                            <h1 class="text-3xl font-bold text-gray-800 mb-6">{{ isEditMode ? 'Edit' : 'Add' }} Recipe</h1>
-                            <form [formGroup]="recipeForm" (ngSubmit)="onSubmit()">
-                                <div class="mb-4">
-                                    <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Recipe Name</label>
-                                    <input id="name" type="text" formControlName="name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                                </div>
-                                <div class="mb-4">
-                                    <label for="ingredients" class="block text-gray-700 text-sm font-bold mb-2">Ingredients</label>
-                                    <textarea id="ingredients" formControlName="ingredients" rows="5" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
-                                </div>
-                                <div class="mb-6">
-                                    <label for="instructions" class="block text-gray-700 text-sm font-bold mb-2">Instructions</label>
-                                    <textarea id="instructions" formControlName="instructions" rows="8" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
-                                </div>
-                                <div class="flex items-center justify-end">
-                                    <button type="submit" [disabled]="recipeForm.invalid" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300 disabled:bg-gray-400">
-                                        Save Recipe
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                `
-            })
-        ];
-        RecipeFormComponent.parameters = [FormBuilder, ActivatedRoute, Router, RecipeService];
 
-        // --- APP COMPONENT (Root) ---
-        // The main component that holds the router outlet
-        class AppComponent {}
-        AppComponent.annotations = [
-            new Component({
-                selector: 'app-root',
-                template: `<router-outlet></router-outlet>`
-            })
-        ];
+        function render() {
+            const hash = location.hash.slice(1) || '/recipes';
+            const app = document.getElementById('app');
 
-        // --- APP ROUTING ---
-        // Defines the navigation paths for the application
-        const appRoutes = [
-            { path: 'recipes', component: RecipeListComponent },
-            { path: 'recipes/:id', component: RecipeDetailComponent },
-            { path: 'add', component: RecipeFormComponent },
-            { path: 'edit/:id', component: RecipeFormComponent },
-            { path: '', redirectTo: '/recipes', pathMatch: 'full' }
-        ];
+            if (hash === '/recipes') {
+                app.innerHTML = renderList();
+                attachListEvents();
+                return;
+            }
+            if (hash === '/add') {
+                app.innerHTML = renderForm(null);
+                attachFormEvents(null);
+                return;
+            }
+            const detailMatch = hash.match(/^\/recipes\/(\d+)$/);
+            if (detailMatch) {
+                app.innerHTML = renderDetail(parseInt(detailMatch[1]));
+                return;
+            }
+            const editMatch = hash.match(/^\/edit\/(\d+)$/);
+            if (editMatch) {
+                const id = parseInt(editMatch[1]);
+                app.innerHTML = renderForm(id);
+                attachFormEvents(id);
+                return;
+            }
+            location.hash = '#/recipes';
+        }
 
-        // --- APP MODULE ---
-        // This module ties everything together: components, services, and routing.
-        class AppModule {}
-        AppModule.annotations = [
-            new NgModule({
-                imports: [
-                    BrowserModule,
-                    CommonModule,
-                    ReactiveFormsModule,
-                    ng.forms.FormsModule, // Added for ngModel
-                    RouterModule.forRoot(appRoutes, { useHash: true }) // useHash for single-file compatibility
-                ],
-                declarations: [
-                    AppComponent,
-                    RecipeListComponent,
-                    RecipeDetailComponent,
-                    RecipeFormComponent
-                ],
-                providers: [RecipeService],
-                bootstrap: [AppComponent]
-            })
-        ];
-
-        // --- BOOTSTRAP ---
-        // This line starts the Angular application.
-        document.addEventListener('DOMContentLoaded', () => {
-            platformBrowserDynamic().bootstrapModule(AppModule);
+        window.addEventListener('hashchange', render);
+        window.addEventListener('DOMContentLoaded', () => {
+            if (!location.hash || location.hash === '#') location.hash = '#/recipes';
+            render();
         });
+
+
     </script>
 </body>
 </html>
